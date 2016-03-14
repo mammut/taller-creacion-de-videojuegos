@@ -85,7 +85,7 @@
 
         update: function() {
             if (this.simonSez) {
-                if (this.time.now - this.timeCheck > 700 - this.N * 40) {
+                if (this.time.now - this.timeCheck > 400) {
                     this.simon.getAt(this.litSquare).alpha = 0.25;
                     this.game.paused = true;
 
