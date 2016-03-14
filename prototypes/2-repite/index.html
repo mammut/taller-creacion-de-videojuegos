@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Repite</title>
+    <script type="text/javascript" src="js/phaser.js"></script>
+    <style type="text/css">
+    body {
+        margin: 0;
+    }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript">
+    var Repite = function() {};
+    Repite.Play = function() {};
+
+    Repite.Play.prototype = {
+
+        preload: function() {
+            this.load.spritesheet('item', 'assets/buttons.png', 160, 160);
+        },
+
+        create: function() {
+            this.maxScore = parseInt(localStorage.getItem('maxScore'), 10) || 0;
+            this.N = 1;
+            this.userCount = 0;
+            this.currentCount = 0;
+            this.sequenceList = [];
+            this.simonSez = false;
+            this.simon = this.add.group();
+            var item;
+
+            this.scale.pageAlignHorizontally = true;
+            this.scale.pageAlignVertically = true;
+
+            for (var i = 0; i < 2; i++) {
+                item = this.simon.create(150 + 168 * i, 100, 'item', i);
+                // Enable input.
+                item.inputEnabled = true;
+                item.input.start(0, true);
+                item.events.onInputDown.add(this.select, this);
+                item.events.onInputUp.add(this.release, this);
+                item.events.onInputOut.add(this.moveOff, this);
+                this.simon.getAt(i).alpha = 0.25;
+            }
+
+            for (i = 0; i < 2; i++) {
+                item = this.simon.create(150 + 168 * i, 268, 'item', i + 2);
+                // Enable input.
+                item.inputEnabled = true;
+                item.input.start(0, true);
+                item.events.onInputDown.add(this.select, this);
+                item.events.onInputUp.add(this.release, this);
+                item.events.onInputOut.add(this.moveOff, this);
+                this.simon.getAt(i + 2).alpha = 0.25;
+            }
+
+            this.intro = true;
+            this.scoreText = this.game.add.text(10, 10, 'Puntaje: 0', { fontSize: '18px', fill: '#fff' });
+            this.maxScoreText = game.add.text(10, 40, 'Puntaje Max: ' + this.maxScore, { fontSize: '14px', fill: '#fff' });
+            setTimeout(function() {
+                this.simonSequence();
+                this.intro = false;
+            }.bind(this), 2000);
+        },
+
+        restart: function() {
+            this.N = 1;
+            this.userCount = 0;
+            this.currentCount = 0;
+            this.sequenceList = [];
+            this.loser = false;
+            this.intro = true;
+
+            this.scoreText.text = 'Puntaje: 0';
+            this.maxScoreText.text = 'Puntaje Max: ' + this.maxScore;
+            setTimeout(function() {
+                this.simonSequence();
+                this.intro = false;
+            }.bind(this), 2000);
+        },
+
+        update: function() {
+            if (this.simonSez) {
+                if (this.time.now - this.timeCheck > 700 - this.N * 40) {
+                    this.simon.getAt(this.litSquare).alpha = 0.25;
+                    this.game.paused = true;
+
+                    setTimeout(function() {
+                        if (this.currentCount < this.N) {
+                            this.game.paused = false;
+                            this.simonSequence();
+                        } else {
+                            this.simonSez = false;
+                            this.game.paused = false;
+                        }
+                    }.bind(this), 400);
+                }
+            }
+        },
+
+        playerSequence: function(selected) {
+            this.correctSquare = this.sequenceList[this.userCount];
+            this.userCount++;
+            this.thisSquare = this.simon.getIndex(selected);
+
+            if (this.thisSquare == this.correctSquare) {
+                if (this.userCount == this.N) {
+                    this.userCount = 0;
+                    this.currentCount = 0;
+                    this.N++;
+                    this.simonSez = true;
+                    this.scoreText.text = 'Puntaje: ' + (this.N - 1);
+                    if (this.maxScore < this.N-1) this.setMaxScore(this.N - 1);
+                }
+            } else {
+                this.loser = true;
+                setTimeout(function() {
+                    this.restart();
+                }.bind(this), 3000);
+            }
+        },
+
+        setMaxScore: function(score) {
+            this.maxScoreText.text = 'Puntaje Max: ' + score;
+            this.maxScore = score;
+            localStorage.setItem('maxScore', score);
+        },
+
+        simonSequence: function() {
+            this.thisSquare = this.rnd.integerInRange(0, 3);
+            this.sequenceList.push(this.thisSquare);
+            this.simonSez = true;
+            this.litSquare = this.sequenceList[this.currentCount];
+            this.simon.getAt(this.litSquare).alpha = 1;
+            this.timeCheck = this.time.now;
+            this.currentCount++;
+        },
+
+        select: function(item, pointer) {
+            if (!this.simonSez && !this.intro && !this.loser) {
+                item.alpha = 1;
+            }
+        },
+
+        release: function(item, pointer) {
+            if (!this.simonSez && !this.intro && !this.loser) {
+                item.alpha = 0.25;
+                this.playerSequence(item);
+            }
+        },
+
+        moveOff: function(item, pointer) {
+            if (!this.simonSez && !this.intro && !this.loser) {
+                item.alpha = 0.25;
+            }
+        },
+
+        render: function() {
+            if ( ! this.intro) {
+                if (this.simonSez) {
+                    this.game.debug.text('Atento...', this.world.centerX - 50, 60, '#E7E202');
+                } else {
+                    this.game.debug.text('Repite...', this.world.centerX - 50, 60, '#3E58FF');
+                }
+            } else {
+                this.game.debug.text('Preparado...', this.world.centerX - 50, 60, '#FFFFFF');
+            }
+
+            if (this.loser) {
+                this.game.debug.text('Has Perdido!', this.world.centerX - 65, 28, '#FFFFFF');
+            }
+
+        }
+    };
+
+    var game = new Phaser.Game(640, 480, Phaser.CANVAS, '');
+    game.state.add('Play', Repite.Play);
+    game.state.start('Play');
+    </script>
+</body>
+
+</html>
