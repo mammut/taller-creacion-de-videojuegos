@@ -30,7 +30,7 @@
           <ul class="posts-list">
             {% for post in site.posts %}
               <li class="post-link">
-                <a class="post-title" href="{{ post.url }}">
+                <a class="post-title" href="{{ site.baseurl }}{{ post.url }}">
                   <span class="post-date">{{ post.date | date_to_string }}</span>
                   {{ post.title }}
                 </a>
@@ -40,9 +40,9 @@
         </div>
         <div class="footer">
           <span id="footer-links">
-            <a href="" class="footer-link">About</a> <span class="separator">&bull;</span>
-            <a href="" class="footer-link">Twitter</a> <span class="separator">&bull;</span>
-            <a href="" class="footer-link">GitHub</a>
+            <a href="http://mammut.github.com" target="_blank" class="footer-link">About</a> <span class="separator">&bull;</span>
+            <a href="http://twitter.com/jpescalonag" target="_blank" class="footer-link">Twitter</a> <span class="separator">&bull;</span>
+            <a href="http://github.com/mammut" target="_blank" class="footer-link">GitHub</a>
           </span>
         </div>
       </div>
