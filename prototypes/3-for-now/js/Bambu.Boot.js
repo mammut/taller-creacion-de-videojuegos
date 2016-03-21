@@ -5,7 +5,7 @@ Bambu.Boot.prototype = {
 
     preload: function() {
         this.game.forceSingleUpdate = true;
-        this.game.load.image('starfield', '/assets/starfield.jpg');
+        this.game.load.image('starfield', 'assets/starfield.jpg');
         this.game.load.image("player", "assets/player.png");
         this.game.load.image("enemy", "assets/enemy.png");
     },
