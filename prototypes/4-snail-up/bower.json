@@ -1,0 +1,27 @@
+{
+  "name": "3-for-now",
+  "homepage": "https://github.com/mammut/taller-creacion-de-videojuegos",
+  "authors": [
+    "jpeg <jp@oq.cl>"
+  ],
+  "description": "phaser html5 game",
+  "main": "app.js",
+  "moduleType": [],
+  "keywords": [
+    "phaser",
+    "html5",
+    "js"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser-dist": "*"
+  }
+}

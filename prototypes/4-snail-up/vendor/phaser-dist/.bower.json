@@ -1,0 +1,15 @@
+{
+  "name": "phaser-dist",
+  "main": "phaser.min.js",
+  "homepage": "https://github.com/tindl88/phaser-dist",
+  "_release": "1a871c2732",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "1a871c2732f1022bb1f5d6965d004b0b3b1a0869"
+  },
+  "_source": "git://github.com/tindl88/phaser-dist.git",
+  "_target": "*",
+  "_originalSource": "phaser-dist",
+  "_direct": true
+}
