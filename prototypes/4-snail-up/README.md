@@ -1,3 +1,3 @@
-# Endless Jumper
+# Snail Up
 
 built with phaser 
