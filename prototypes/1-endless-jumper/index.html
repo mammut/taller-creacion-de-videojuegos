@@ -4,172 +4,22 @@
 <head>
     <meta charset="UTF-8" />
     <title>Endless Jumper</title>
-    <script type="text/javascript" src="js/phaser.js"></script>
     <style type="text/css">
     body {
         margin: 0;
-        background: black;
+        padding: 0;
+        background: #aec19c;
     }
     </style>
 </head>
 
 <body>
-    <script type="text/javascript">
-    var maxScore = parseInt(localStorage.getItem('maxscore'), 10) || 0;
-    var Jumper = function() {};
-    Jumper.Play = function() {};
-
-    Jumper.Play.prototype = {
-
-        preload: function() {
-            this.load.image("background", "assets/bg.jpg");
-            this.load.spritesheet('player', 'assets/dude.png', 32, 48);
-            this.load.image('pixel', 'assets/pixel.png');
-            this.load.image('star', 'assets/star.png');
-        },
-
-        create: function() {
-            this.background = this.add.tileSprite(0, 0, 800, 600, "background");
-            this.background.fixedToCamera = true;
-
-            this.physics.startSystem(Phaser.Physics.ARCADE);
-
-            this.cameraYMin = 99999;
-            this.platformYMin = 99999;
-
-            this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-            this.scale.pageAlignHorizontally = true;
-            this.scale.pageAlignVertically = true;
-
-            this.groundCreate();
-            this.starsCreate();
-            this.playerCreate();
-
-            this.cursor = this.input.keyboard.createCursorKeys();
-
-            this.score = 0;
-            this.scoreText = game.add.text(10, 10, 'Puntaje: 0', { fontSize: '18px', fill: '#fff' });
-            this.scoreText.fixedToCamera = true;
-            this.maxScoreText = game.add.text(10, 40, 'Puntaje Max: ' + maxScore, { fontSize: '14px', fill: '#fff' });
-            this.maxScoreText.fixedToCamera = true;
-        },
-
-        update: function() {
-            this.world.setBounds(0, -this.player.yChange, this.world.width, this.game.height + this.player.yChange);
-
-            this.cameraYMin = Math.min(this.cameraYMin, this.player.y - this.game.height + 230);
-            this.camera.y = this.cameraYMin;
-
-            this.physics.arcade.collide(this.player, this.grounds);
-            this.physics.arcade.collide(this.player, this.stars);
-            this.playerMove();
-
-            this.stars.forEachAlive(function(elem) {
-                this.platformYMin = Math.min(this.platformYMin, elem.y);
-                if (elem.y > this.camera.y + this.game.height) {
-                    elem.kill();
-                    this.starsCreateOne(this.rnd.integerInRange(0, this.world.width - 50),  this.camera.y - 50);
-                }
-            }.bind(this));
-        },
-
-        shutdown: function() {
-            this.world.setBounds(0, 0, this.game.width, this.game.height);
-            this.cursor = null;
-            this.player.destroy();
-            this.player = null;
-            this.grounds.destroy();
-            this.grounds = null;
-            this.stars.destroy();
-            this.stars =  null;
-        },
-
-        groundCreate: function() {
-            this.grounds = this.add.group();
-            this.grounds.enableBody = true;
-            this.ground = this.grounds.create(-16, this.world.height - 16, 'pixel');
-            this.ground.body.immovable = true;
-            this.ground.scale.x = this.world.width + 16;
-            this.ground.scale.y = 16;
-        },
-
-        starsCreate: function() {
-            this.stars = this.add.group();
-            this.stars.enableBody = true;
-            this.stars.createMultiple(6, 'star');
-
-            for (var i = 0; i < 5; i++) {
-                this.starsCreateOne(this.rnd.integerInRange(0, this.world.width - 50), this.world.height - 100 - 100 * i);
-            }
-        },
-
-        starsCreateOne: function(x, y) {
-            var star = this.stars.getFirstDead();
-            star.reset(x,y);
-            star.body.immovable = true;
-            star.body.checkCollision.up = false;
-            return star;
-        },
-
-        playerCreate: function() {
-            this.player = game.add.sprite(this.world.centerX, this.world.height - 36, 'player');
-            this.player.anchor.set(0.5);
-
-            this.player.yOrig = this.player.y;
-            this.player.yChange = 0;
-
-            this.physics.arcade.enable(this.player);
-            this.player.body.gravity.y = 600;
-            this.player.body.checkCollision.up = false;
-            this.player.body.checkCollision.left = false;
-            this.player.body.checkCollision.right = false;
-
-            this.player.animations.add('left', [0, 1, 2, 3], 10, true);
-            this.player.animations.add('right', [5, 6, 7, 8], 10, true);
-        },
-
-        playerMove: function() {
-            if (this.cursor.left.isDown) {
-                this.player.body.velocity.x = -350;
-                this.player.animations.play('left');
-            } else if (this.cursor.right.isDown) {
-                this.player.body.velocity.x = 350;
-                this.player.animations.play('right');
-            } else {
-                this.player.body.velocity.x = 0;
-                this.player.animations.stop();
-            }
-
-            if (this.cursor.up.isDown && this.player.body.touching.down) {
-                this.player.body.velocity.y = -350;
-            }
-
-            this.world.wrap(this.player, this.player.width / 2, false);
-            this.player.yChange = Math.max(this.player.yChange, Math.abs(this.player.y - this.player.yOrig));
-
-
-            this.physics.arcade.overlap(this.player, this.stars, this.collectStar, null, this);
-
-            if (this.player.y > this.cameraYMin + this.game.height && this.player.alive) {
-                maxScore = maxScore < this.score ? this.score : maxScore;
-                localStorage.setItem('maxscore', maxScore);
-                this.state.start('Play');
-            }
-        },
-
-        collectStar: function(player, star) {
-            star.kill();
-            player.body.velocity.y = -550;
-            this.starsCreateOne(this.rnd.integerInRange(0, this.world.width - 50),  this.camera.y - 50);
-            this.score += 10;
-            this.scoreText.text = 'Puntaje: ' + this.score;
-        }
-    };
-
-    var game = new Phaser.Game(600, 500, Phaser.CANVAS, '');
-    game.state.add('Play', Jumper.Play);
-    game.state.start('Play');
-    </script>
+    <div id="game"></div>
+    <script type="text/javascript" src="vendor/phaser-dist/phaser.min.js"></script>
+    <script type="text/javascript" src="js/Jumper.Boot.js"></script>
+    <script type="text/javascript" src="js/Jumper.Menu.js"></script>
+    <script type="text/javascript" src="js/Jumper.Play.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
 </body>
 
 </html>
