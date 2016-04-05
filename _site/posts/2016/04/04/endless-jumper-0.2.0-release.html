@@ -3,7 +3,7 @@
   <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <title>Devblog - Bienvenidos</title>
+      <title>Devblog - Endless Jumper v0.2.0 release</title>
       <meta name="viewport" content="width=device-width">
 
       <!-- syntax highlighting CSS -->
@@ -74,23 +74,61 @@
   </div>
   <div id="post-info">
     <div id="cover-photo-container">
-      <img id="cover-photo" src="/taller-creacion-de-videojuegos/images/2016-03-07.jpg">
+      <img id="cover-photo" src="/taller-creacion-de-videojuegos/images/2016-04-04.jpg">
     </div>
     <div id="info-container">
-      <h1 id="title">Bienvenidos</h1>
-      <span id="date">07 Mar 2016</span>
+      <h1 id="title">Endless Jumper v0.2.0 release</h1>
+      <span id="date">04 Apr 2016</span>
     </div>
   </div>
 
   <div class="post">
-    <h2 id="bienvenidos-al-devblog-jpeg">Bienvenidos al Devblog jpeg</h2>
+    <h2 id="v020">v0.2.0</h2>
 
-<p>Aquí iré publicando mi experiencia desarrollando juegos en HTML utilizando diferentes librerías y frameworks de la industria.</p>
+<p>En la version 0.2.0 de <a href="http://gamejolt.com/games/endless-jumper/133143">Endless Jumper</a> se han introducido una serie de cambios para hacer el juego mas divertido de jugar. El detalle completo de los cambios lo pueden encontrar en el repositorio del juego en <a href="https://github.com/mammut/taller-creacion-de-videojuegos/tree/master/prototypes/1-endless-jumper">Github</a>.</p>
+
+<p>A grandes rasgos:</p>
+
+<ul>
+  <li>Se agregaron elementos de audio.</li>
+  <li>Se agrego la posibilidad de salto en <em>mid air</em>, los cuales son limitados.</li>
+  <li>Se agregaron estrellas de tres tipos de colores, los azules y rojos hacen saltar mas alto. Los rojos a su vez entregan un <em>mid air</em> mas al jugador.</li>
+</ul>
+
+<p>En base a los cambios realizados se construyen los siguientes modelos para explicar el juego.</p>
+
+<h2 id="token-based-model">Token Based Model</h2>
+
+<p>Se han identificado los siguientes <em>Tokens</em> dentro del juego:</p>
+
+<p class="center">
+<img class="responsive responsive-400" src="/taller-creacion-de-videojuegos/images/2016-04/tags.png" alt="game Tags" />
+</p>
+
+<p>los cuales interactúan en la siguiente matriz de eventos:</p>
+
+<p class="center">
+<img class="responsive responsive-400" src="/taller-creacion-de-videojuegos/images/2016-04/tags-diagram.png" alt="game Tags" />
+</p>
+
+<h2 id="game-layers">Game Layers</h2>
+
+<p>Usando los tokens identificados se puede representar el juego usando Game Layers. Se ha construido el siguiente diagrama para el juego:</p>
+
+<p class="center">
+<img class="responsive responsive-600" src="/taller-creacion-de-videojuegos/images/2016-04/game-layers.png" alt="Game Layers" />
+</p>
+
+<p>En general la complejidad del juego no es demasiado grande, sería interesante pivotear el juego agregando elementos de enemigos móviles los que haya que esquivar, ademas de agregar nuevas habilidades al jugador para enfrentar dichos obstáculos.</p>
+
+<h3 id="referencias">Referencias</h3>
+
+<p><a href="http://www.gamasutra.com/view/feature/187777/game_design_tools_for_collaboration.php?print=1">Game Design Tools for Collaboration by Damien Djaouti</a></p>
 
   </div>
   <div class="colophon">
     <p>
-      <span id="pub-date">Publicado el 07 Mar 2016</span> <span class="separator">&bull;</span>
+      <span id="pub-date">Publicado el 04 Apr 2016</span> <span class="separator">&bull;</span>
       <span id="social">Encuentrame en <a href="http://twitter.com/jpescalonag" target="_blank">Twitter</a>!</span>
     </p>
   </div>

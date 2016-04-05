@@ -30,6 +30,13 @@
           <ul class="posts-list">
             
               <li class="post-link">
+                <a class="post-title" href="/taller-creacion-de-videojuegos/posts/2016/04/04/endless-jumper-0.2.0-release.html">
+                  <span class="post-date">04 Apr 2016</span>
+                  Endless Jumper v0.2.0 release
+                </a>
+              </li>
+            
+              <li class="post-link">
                 <a class="post-title" href="/taller-creacion-de-videojuegos/posts/2016/03/13/pahser-endless-jumper-y-repite.html">
                   <span class="post-date">13 Mar 2016</span>
                   Phaser: Endless Jumper y Repite
@@ -69,116 +76,61 @@
   </div>
   <div id="post-info">
     <div id="cover-photo-container">
-      <img id="cover-photo" src="/taller-creacion-de-videojuegos/images/2016-03-13.jpg">
+      <img id="cover-photo" src="/taller-creacion-de-videojuegos/images/2016-04-04.jpg">
     </div>
     <div id="info-container">
-      <h1 id="title">Phaser: Endless Jumper y Repite</h1>
-      <span id="date">13 Mar 2016</span>
+      <h1 id="title">Endless Jumper v0.2.0 release</h1>
+      <span id="date">04 Apr 2016</span>
     </div>
   </div>
 
   <div class="post">
-    <h2 id="probando-phaser">Probando Phaser</h2>
+    <h2 id="v020">v0.2.0</h2>
 
-<p>Lo primero que hice para aprender Phaser fue seguir el tutorial de principiantes, donde explican a rasgos generales como utilizar el framework. Explican principalmente el funcionamiento del Preloader, Create y Update, funciones que forman parte del ciclo de un juego.</p>
+<p>En la version 0.2.0 de <a href="http://gamejolt.com/games/endless-jumper/133143">Endless Jumper</a> se han introducido una serie de cambios para hacer el juego mas divertido de jugar. El detalle completo de los cambios lo pueden encontrar en el repositorio del juego en <a href="https://github.com/mammut/taller-creacion-de-videojuegos/tree/master/prototypes/1-endless-jumper">Github</a>.</p>
+
+<p>A grandes rasgos:</p>
 
 <ul>
-  <li>En Preload se cargan los assets necesarios para el juego (imágenes, sonidos, tiles, etc).</li>
-  <li>En Create se crean los objetos del mundo del juego, plataformas, personajes, etc.</li>
-  <li>En Update se actualiza constantemente el estado del juego, movimientos, colisiones, etc.</li>
+  <li>Se agregaron elementos de audio.</li>
+  <li>Se agrego la posibilidad de salto en <em>mid air</em>, los cuales son limitados.</li>
+  <li>Se agregaron estrellas de tres tipos de colores, los azules y rojos hacen saltar mas alto. Los rojos a su vez entregan un <em>mid air</em> mas al jugador.</li>
 </ul>
 
-<p>Leyendo otros tutoriales y ejemplos descubrí una forma diferente de programar el juego utilizando Herencia en JS (herencia de prototipos, no de clases). Es un poco mas complicada que utilizando el objeto literal, pero el código queda mas estructurado y la ocultación de los objetos del juego es mas limpia que hacer la típica <strong>immediately invoked function</strong>.</p>
+<p>En base a los cambios realizados se construyen los siguientes modelos para explicar el juego.</p>
 
-<p>La diferencia es:</p>
+<h2 id="token-based-model">Token Based Model</h2>
 
-<h3 id="ejemplo-utilizando-objetos-literales">Ejemplo utilizando objetos literales</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">AUTO</span><span class="p">,</span> <span class="s1">''</span><span class="p">,</span> <span class="p">{</span> 
-    <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span>
-    <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span>
-    <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> 
-    <span class="c1">// todo es referenciado utilizando game</span>
-    <span class="p">...</span>
-<span class="p">});</span>
-</code></pre>
-</div>
-<p> </p>
+<p>Se han identificado los siguientes <em>Tokens</em> dentro del juego:</p>
 
-<h3 id="ejemplo-utilizando-herencia-de-prototipos">Ejemplo utilizando herencia de prototipos</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">Jumper</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
-<span class="nx">Jumper</span><span class="p">.</span><span class="nx">Play</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
+<p class="center">
+<img class="responsive responsive-400" src="/taller-creacion-de-videojuegos/images/2016-04/tags.png" alt="game Tags" />
+</p>
 
-<span class="nx">Jumper</span><span class="p">.</span><span class="nx">Play</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">preload</span><span class="p">:</span> <span class="nx">preload</span><span class="p">,</span>
-    <span class="na">create</span><span class="p">:</span> <span class="nx">create</span><span class="p">,</span>
-    <span class="na">update</span><span class="p">:</span> <span class="nx">update</span> 
-    <span class="c1">// todo es referenciado utilizando this</span>
-<span class="p">};</span>
+<p>los cuales interactúan en la siguiente matriz de eventos:</p>
 
-<span class="kd">var</span> <span class="nx">game</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">Game</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="nx">Phaser</span><span class="p">.</span><span class="nx">CANVAS</span><span class="p">,</span> <span class="s1">''</span><span class="p">);</span>
-</code></pre>
-</div>
+<p class="center">
+<img class="responsive responsive-400" src="/taller-creacion-de-videojuegos/images/2016-04/tags-diagram.png" alt="game Tags" />
+</p>
 
-<p>Por experiencia previa en JavaScript opte por hacer mis juegos en el segundo formato.</p>
+<h2 id="game-layers">Game Layers</h2>
 
-<h2 id="endles-jumper">Endles Jumper</h2>
+<p>Usando los tokens identificados se puede representar el juego usando Game Layers. Se ha construido el siguiente diagrama para el juego:</p>
 
-<p><a href="http://gamejolt.com/games/endless-jumper/133143">Endless Jumper</a>: La idea original es del juego <a href="http://www.ferryhalim.com/orisinal/g3/bells.htm">Winterbells</a>, un endless jumper en que solo es posible avanzar hacia arriba a medida que se van tocando las campanitas.</p>
+<p class="center">
+<img class="responsive responsive-600" src="/taller-creacion-de-videojuegos/images/2016-04/game-layers.png" alt="Game Layers" />
+</p>
 
-<p>Este juego es un arcade el cual involucra física, en especifico gravedad y colisiones. Phaser incluye tres tipos de físicas y es muy sencillo de inicializar. Muy bueno en ese aspecto.</p>
+<p>En general la complejidad del juego no es demasiado grande, sería interesante pivotear el juego agregando elementos de enemigos móviles los que haya que esquivar, ademas de agregar nuevas habilidades al jugador para enfrentar dichos obstáculos.</p>
 
-<p>Phaser da la posibilidad de crear grupos de objetos o elementos, por ejemplo el grupo de estrellas, el cual colisiona con el Player. Esto es una gran ventaja, pues para indicarle al juego que las estrellas deben colisionar con el jugador no es necesario indicarle a cada estrella individualmente, si no basta con el grupo estrella, luego cualquier elemento del grupo colisiona con el Player automáticamente.</p>
+<h3 id="referencias">Referencias</h3>
 
-<p>La principal dificultad del juego fue el movimiento infinito vertical y el manejo de las estrellas (aparecer y desaparecer).</p>
-
-<p>Para el movimiento infinito vertical se utiliza una mezcla de <em>Bounds</em> y <em>Wrap</em>. El mundo en el eje vertical queda fijo con respecto al player. En el eje x tiene un wrap (si sale por la derecha, aparece por la izquierda).</p>
-
-<p>Para la generación de estrellas encontré un ejemplo de un sistema similar (a lo flappy bird) en que utiliza elementos <em>vivos</em> y <em>muertos</em> (<code class="highlighter-rouge">elem.kill()</code>)
-Luego cuando salían las estrellas de la vista, o cuando el player lo tocaba, quedaba en la lista de elementos muertos. Luego en el update, volvía a crear el elemento por sobre la vista de la cámara actual, distribuido equitativamente.</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">this</span><span class="p">.</span><span class="nx">stars</span><span class="p">.</span><span class="nx">forEachAlive</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">elem</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">game</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span> <span class="p">{</span>
-         <span class="c1">// eliminar elementos fuera de la camara</span>
-        <span class="nx">elem</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span>
-         <span class="c1">// Crear arriba</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">starsCreateOne</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">rnd</span><span class="p">.</span><span class="nx">integerInRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">world</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">50</span><span class="p">),</span>  <span class="k">this</span><span class="p">.</span><span class="nx">camera</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">50</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
-</code></pre>
-</div>
-
-<p>Phaser es una excelente opción para crear juegos tipo arcade, pues incluye muchas implementaciones elementos de física (gravedad, colisiones, teclados, camaras, etc).</p>
-
-<h3 id="repite">Repite</h3>
-
-<p>Este juego no es un arcade, sino un tipo memorice, donde el jugador debe observar una secuencia de luces para luego repetirla. Al repetirla correctamente, la secuencia crece en una luz.</p>
-
-<p>No fue necesario utilizar física en este juego, y la lógica del juego en general es bastante sencilla, solo se agrega un numero del botón al azar a una lista de números (la secuencia) y luego se escucha la secuencia del usuario, si cambia en algo este pierde.</p>
-
-<p>La mayor dificultad fue el parpadeo de las luces, pero en los ejemplos de Phaser había un ejemplo similar de como crear parpadeos. Utilizaban diferencias de tiempo para luego en un tiempo futuro en otro update cambiar el <em>alpha</em> del botón.</p>
-
-<h2 id="veredicto">Veredicto</h2>
-
-<p>Phaser es una excelente libreria en JavaScript para crear juegos, la API esta bien documentada, hay muchisimos ejemplos y recursos para aprender, la comunidad es grande. Por otro lado es necesario tener un nivel descente de JavaScript, en especial cuando se refiere al scope, el tipico problema de:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">works</span><span class="p">();</span> <span class="c1">// no funciona</span>
-<span class="p">},</span> <span class="mi">400</span><span class="p">);</span>
-</code></pre>
-</div>
-
-<p>vs</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">works</span><span class="p">()</span> <span class="c1">// funciona</span>
-<span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">),</span> <span class="mi">400</span><span class="p">);</span>
-</code></pre>
-</div>
+<p><a href="http://www.gamasutra.com/view/feature/187777/game_design_tools_for_collaboration.php?print=1">Game Design Tools for Collaboration by Damien Djaouti</a></p>
 
   </div>
   <div class="colophon">
     <p>
-      <span id="pub-date">Publicado el 13 Mar 2016</span> <span class="separator">&bull;</span>
+      <span id="pub-date">Publicado el 04 Apr 2016</span> <span class="separator">&bull;</span>
       <span id="social">Encuentrame en <a href="http://twitter.com/jpescalonag" target="_blank">Twitter</a>!</span>
     </p>
   </div>

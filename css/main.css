@@ -289,3 +289,20 @@ a:hover {
   font-size: 0.95em;
   color: #777;
 }
+
+img.responsive {
+  width: 100%;
+  height: auto;
+}
+
+img.responsive.responsive-400 {
+  max-width: 400px;
+}
+
+img.responsive.responsive-600 {
+  max-width: 600px;
+}
+
+p.center {
+  text-align: center;
+}
